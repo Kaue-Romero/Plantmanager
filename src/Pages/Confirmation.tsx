@@ -8,9 +8,15 @@ import {
 import { Button } from '../components/Button';
 import colors from '../styles/colors';
 import fonts from '../styles/fonts';
+import { useNavigation } from '@react-navigation/core';
 
 export function Confirmation() {
-    
+    const navigation = useNavigation();
+
+    function handleMoveOn() {
+        navigation.navigate('PlantSelect');
+    }
+
     return(
         <SafeAreaView style={styled.container}>
             <View style={styled.content}>
@@ -24,7 +30,7 @@ export function Confirmation() {
                 Agora vamos começar a cuidar das suas {'\n'}plantinhas com muito cuidado.
                 </Text>
                 <View style={styled.footer}>
-                    <Button text="Começar"/>
+                    <Button text="Começar" onPress={handleMoveOn}/>
                 </View>
             </View>
         </SafeAreaView>

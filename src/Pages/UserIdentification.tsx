@@ -38,12 +38,9 @@ export function UserIdentification() {
     }
 
     function handleSubmit() {
-        if(name) {
+        if(isFilled) {
             navigation.navigate('Confirmation');
-        } else {
-            alert('Coloque um nome')
         }
-       
     }
 
     return(
@@ -71,10 +68,19 @@ export function UserIdentification() {
                                 onChangeText={handleInputChange}
                             />
                             <View style={styled.footer}>
-                                <Button 
-                                    text="Confirmar"
-                                    onPress={handleSubmit}
-                                />
+                            {isFilled ? (
+                    <Button
+                      text="Confirmar"
+                      onPress={handleSubmit}
+                    />
+                  ) : (
+                    <Button
+                      disabled={true}
+                      text="Confirmar"
+                      onPress={handleSubmit}
+                      style={styled.buttonDisabled}
+                    />
+                  )}
                             </View>
                         </View>
                     </View>
@@ -132,5 +138,17 @@ const styled = StyleSheet.create({
         marginTop: 40,
         width: '100%',
         paddingHorizontal: 20,
-    }
+    },
+
+    footerActive: {
+        backgroundColor: colors.gray
+    },
+
+    buttonDisabled: {
+        backgroundColor: colors.green_light,
+        height: 56,
+        borderRadius: 16,
+        justifyContent: 'center',
+        alignItems: 'center',
+      }
 });
