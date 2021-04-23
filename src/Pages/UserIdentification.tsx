@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/core';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
     SafeAreaView,
     StyleSheet,
@@ -9,7 +10,8 @@ import {
     KeyboardAvoidingView,
     Platform,
     TouchableWithoutFeedback,
-    Keyboard
+    Keyboard,
+    Alert
 } from 'react-native';
 import { Button } from '../components/Button';
 import colors from '../styles/colors';
@@ -21,7 +23,7 @@ export function UserIdentification() {
 
     const [isFocused, setIsFocused] = useState(false);
     const [isFilled, setIsFilled] = useState(false);
-    const [name, setName] = useState<string>();
+    const [name, setName] = useState<string>('');
 
     function handleInputBlur() {
         setIsFocused(false);
@@ -37,9 +39,24 @@ export function UserIdentification() {
         setName(value);
     }
 
-    function handleSubmit() {
+    async function handleSubmit() {
         if(isFilled) {
-            navigation.navigate('Confirmation');
+            try {
+                await AsyncStorage.setItem('@plantmanager:user', name);
+                navigation.navigate('Confirmation', {
+                    title: 'Prontinho',
+                    subTitle: 'Agora vamos começar a cuidar das suas plantinhas com muito cuidado.',
+                    buttonTitle: 'Começar',
+                    icon: 'smile',
+                    nextScreen: 'PlantSelect'
+                });
+            } catch {
+                Alert.alert('Não consegui salvar seu nome 😢');
+            }
+            
+            
+        } else {
+            return Alert.alert('Me diz como chamar você 😢')
         }
     }
 
@@ -66,6 +83,7 @@ export function UserIdentification() {
                                 onBlur={handleInputBlur}
                                 onFocus={handleInputFocus}
                                 onChangeText={handleInputChange}
+                                maxLength={14}
                             />
                             <View style={styled.footer}>
                             {isFilled ? (
@@ -75,7 +93,6 @@ export function UserIdentification() {
                     />
                   ) : (
                     <Button
-                      disabled={true}
                       text="Confirmar"
                       onPress={handleSubmit}
                       style={styled.buttonDisabled}
