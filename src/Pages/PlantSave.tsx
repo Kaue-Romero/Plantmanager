@@ -5,6 +5,7 @@ import {
     Text,
     View,
     Image,
+    ScrollView,
     Platform,
     TouchableOpacity,
 } from 'react-native';
@@ -65,61 +66,66 @@ export function PlantSave() {
     }
 
     return(
-        <View style={styled.container}>
-            <View style={styled.plantInfo}>
-                <SvgFromUri
-                    uri={plant.photo}
-                    height={150}
-                    width={150}
-                />
-                <Text style={styled.plantName}>
-                    {plant.name}
-                </Text>
+        <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styled.container}
+        >
+            <View style={styled.container}>
+                <View style={styled.plantInfo}>
+                    <SvgFromUri
+                        uri={plant.photo}
+                        height={150}
+                        width={150}
+                    />
+                    <Text style={styled.plantName}>
+                        {plant.name}
+                    </Text>
 
-                <Text style={styled.plantAbout}>
-                    {plant.about}
-                </Text>
-            </View>
-
-            <View style={styled.controllers}>
-                <View style={styled.tipContainer}>
-                    <Image source={waterDrop} style={styled.tipImage}/>
-                    <Text style={styled.tipText}>
-                        {plant.water_tips}
+                    <Text style={styled.plantAbout}>
+                        {plant.about}
                     </Text>
                 </View>
-                <Text style={styled.alertLabel}>
-                    Escolha o melhor horário para ser lembrado:
-                </Text>
 
-                {showDataPicker && (
-                    <DataTimePicker
-                    value={selectedDateTime}
-                    mode='time'
-                    onChange={handleChangeTime}
-                    />
-                )}  
-
-                {   Platform.OS === 'android' && (
-                    <TouchableOpacity onPress={() => setShowDataPicker(oldState => !oldState)} style={styled.button}>
-                        <Text style={styled.dateTimePickerText}>
-                            {`Mudar ${format(selectedDateTime, 'HH:mm')}`}
+                <View style={styled.controllers}>
+                    <View style={styled.tipContainer}>
+                        <Image source={waterDrop} style={styled.tipImage}/>
+                        <Text style={styled.tipText}>
+                            {plant.water_tips}
                         </Text>
-                    </TouchableOpacity>
-                )
+                    </View>
+                    <Text style={styled.alertLabel}>
+                        Escolha o melhor horário para ser lembrado:
+                    </Text>
 
-                } 
+                    {showDataPicker && (
+                        <DataTimePicker
+                        value={selectedDateTime}
+                        mode='time'
+                        onChange={handleChangeTime}
+                        />
+                    )}  
+
+                    {   Platform.OS === 'android' && (
+                        <TouchableOpacity onPress={() => setShowDataPicker(oldState => !oldState)} style={styled.button}>
+                            <Text style={styled.dateTimePickerText}>
+                                {`Mudar ${format(selectedDateTime, 'HH:mm')}`}
+                            </Text>
+                        </TouchableOpacity>
+                    )
+
+                    } 
 
 
-                <Button text="Cadastrar planta" onPress={() => handleSave()}/>
+                    <Button text="Cadastrar planta" onPress={() => handleSave()}/>
+                </View>
             </View>
-        </View>
+        </ScrollView>
     );
 }
 
 const styled = StyleSheet.create({
     container: {
-        flex: 1,
+        flexGrow: 1,
         justifyContent: 'space-between',
         backgroundColor: colors.shape,
     },
